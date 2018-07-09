@@ -1,38 +1,41 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mc-vanilla
+spec:
+  type: NodePort
+  ports:
+  - port: 25565
+    nodePort: 30000
+  selector:
+    app: mc-vanilla
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: minecraft-deployment
-
+  name: mc-vanilla
 spec:
-  replicas: 1
   selector:
     matchLabels:
-      app: minecraft
-
+      app: mc-vanilla
   template:
     metadata:
       labels:
-        app: minecraft
-
+        app: mc-vanilla
     spec:
       containers:
-      - name: minecraft
-        image: SebastianSikora/mcserver
-        command: ["java"]
-        args: ["-jar", "/app/server.jar", "nogui"]
+      - image: itzg/minecraft-server
+        name: mc-vanilla
+        env:
+          # Use secret in real usage
+        - name: EULA
+          value: "true"
         ports:
         - containerPort: 25565
+          name: main
         volumeMounts:
-        - name: mineworld
-          mountPath: /world
-        - name: minelog
-          mountPath: /log
-        imagePullPolicy: Never
-      volumes: 
-      - name: mineworld
-        persistentVolumeClaim:
-          claimName: mineworld-claim
-      - name: minelog
-        persistentVolumeClaim:
-          claimName: minelog-claim
+        - name: mc-data
+          mountPath: /data
+      volumes:
+      - name: mc-data
+        emptyDir: {}
