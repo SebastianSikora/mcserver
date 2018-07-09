@@ -24,10 +24,8 @@ spec:
         ports:
         - containerPort: 25565
         volumeMounts:
-        - name: mineworld
-          mountPath: /world
-        - name: minelog
-          mountPath: /log
+        - name: mc-data
+          mountPath: /data
         imagePullPolicy: Never
       volumes: 
       - name: mc-data
