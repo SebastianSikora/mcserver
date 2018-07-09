@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
       - name: minecraft
-        image: wam:latest
+        image: SebastianSikora/mcserver
         command: ["java"]
         args: ["-jar", "/app/server.jar", "nogui"]
         ports:
